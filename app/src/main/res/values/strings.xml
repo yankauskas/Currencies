@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Currencies</string>
+
+    <string name="count_f">transactions : %1$d</string>
+    <string name="amount_f">amount in %1$s : %2$.2f</string>
+    <string name="total_amount_f">Total amount of %1$s in %2$s : %3$.2f</string>
+
+    <string name="error_message">Data is not valid. Please, check device log for detail information</string>
+</resources>

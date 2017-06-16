@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/default_margin"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/sku_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SKU_AMOUNT"
+            android:textSize="@dimen/text_size_normal" />
+
+        <TextView
+            android:id="@+id/sku_amount_base"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin"
+            android:text="SKU_AMOUNT_BASE"
+            android:textSize="@dimen/text_size_normal" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="@android:color/darker_gray"
+        android:layout_gravity="bottom"/>
+
+</FrameLayout>
