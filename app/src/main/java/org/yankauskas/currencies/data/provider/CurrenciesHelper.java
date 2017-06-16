@@ -15,7 +15,8 @@ import java.util.*;
 public class CurrenciesHelper {
     private static final String LOG_TAG = CurrenciesHelper.class.getSimpleName();
     //Move to constants
-    public static final int RATE_ROUND_SCALE = 2;
+    public static final int RATE_ROUND_SCALE = 6;
+    public static final int MONEY_ROUND_SCALE = 2;
     private static final String DEFAULT_BASE_CURRENCY = "GBP";
 
     private HashMap<String, BigDecimal> currencies = new HashMap<>();
@@ -34,30 +35,27 @@ public class CurrenciesHelper {
         List<CurrencyRate> rates = new ArrayList<>(source.getCurrencies());
         this.baseCurrency = baseCurrency;
         currencies.put(this.baseCurrency, BigDecimal.ONE);
-        Set<String> knownCurrencies = new HashSet<>();
-        knownCurrencies.add(this.baseCurrency);
         int operations;
         do {
             operations = 0;
             for (Iterator<CurrencyRate> iter = rates.iterator(); iter.hasNext(); ) {
                 CurrencyRate element = iter.next();
                 //We know all about this currency - just remove it from list
-                if (knownCurrencies.contains(element.from) && knownCurrencies.contains(element.to)) {
+                if (currencies.containsKey(element.from) && currencies.containsKey(element.to)) {
                     iter.remove();
                     operations++;
                     continue;
                 }
                 //We know about TO and can calculate rate value for FROM by multiplying
-                if (knownCurrencies.contains(element.to) && !knownCurrencies.contains(element.from)) {
+                if (currencies.containsKey(element.to) && !currencies.containsKey(element.from)) {
                     currencies.put(element.from, element.rate.multiply(currencies.get(element.to), new MathContext(RATE_ROUND_SCALE)));
-                    knownCurrencies.add(element.from);
                     iter.remove();
                     operations++;
                     continue;
                 }
                 //We have inverted rate with known currency, so let's normalize it just in case
                 // but not use on that iteration (we could fount already normalized one)
-                if (!knownCurrencies.contains(element.to) && knownCurrencies.contains(element.from)) {
+                if (!currencies.containsKey(element.to) && currencies.containsKey(element.from)) {
                     String temp = element.to;
                     element.to = element.from;
                     element.from = temp;
@@ -82,7 +80,7 @@ public class CurrenciesHelper {
     }
 
     public double getAmountInBaseCurrency(String currency, double amount) {
-        return new BigDecimal(amount).multiply(currencies.get(currency), new MathContext(RATE_ROUND_SCALE)).doubleValue();
+        return new BigDecimal(amount).multiply(currencies.get(currency), new MathContext(MONEY_ROUND_SCALE)).doubleValue();
     }
 
     @Override
