@@ -20,11 +20,7 @@ public class MainActivity extends AppCompatActivity implements TransactionProvid
     public static final String SKU_FRAGMENT_TAG = "SKU_FRAGMENT_TAG";
     public static final String SKU_DETAILS_FRAGMENT_TAG = "SKU_DETAILS_FRAGMENT_TAG";
     private static final String LOG_TAG = AppCompatActivity.class.getSimpleName();
-
-
-    @Inject
-    CurrenciesHelper currenciesHelper;
-
+    
     @Inject
     TransactionProvider transactionProvider;
 
