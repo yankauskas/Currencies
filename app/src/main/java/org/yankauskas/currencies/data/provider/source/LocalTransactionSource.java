@@ -27,13 +27,14 @@ public class LocalTransactionSource implements TransactionsSource {
 
     @Override
     public List<Transaction> getTransactions() {
+        if (transactions.size() == 0) {
+            parceFile();
+        }
         return transactions;
     }
 
     public LocalTransactionSource(Context context) {
         mContext = context;
-        //Get currencies from file
-        parceFile();
     }
 
     private void parceFile() {

@@ -15,6 +15,12 @@ import java.util.List;
 
 public interface TransactionProvider {
 
+    interface InitProviderCallback {
+        void onProviderInitFinished();
+    }
+
+    void initProvider(InitProviderCallback callback);
+
     List<Transaction> getAllTransactions();
 
     List<Transaction> getTransactionsForSku(String sku);

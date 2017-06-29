@@ -5,8 +5,6 @@ import android.util.Log;
 
 import com.dd.plist.NSArray;
 import com.dd.plist.NSDictionary;
-import com.dd.plist.NSObject;
-import com.dd.plist.NSString;
 import com.dd.plist.PropertyListParser;
 
 import org.yankauskas.currencies.R;
@@ -16,6 +14,8 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * Created by Viktor Yankauskas (v.yankauskas@gmail.com) on 6/15/17.
@@ -26,15 +26,8 @@ public class LocalCurrencySource implements CurrencySource {
     private List<CurrencyRate> currencyRates = new ArrayList<>();
     private Context mContext;
 
-    @Override
-    public List<CurrencyRate> getCurrencies() {
-        return currencyRates;
-    }
-
     public LocalCurrencySource(Context context) {
         mContext = context;
-        //Get currencies from file
-        parceFile();
     }
 
     private void parceFile() {
@@ -49,7 +42,17 @@ public class LocalCurrencySource implements CurrencySource {
                 currencyRates.add(new CurrencyRate(from, to, rate));
             }
         } catch (Exception ex) {
+            currencyRates.clear();
             Log.d(LOG_TAG, "Can not parse file : " + ex.getMessage());
         }
+    }
+
+
+    @Override
+    public List<CurrencyRate> getCurrencies() {
+        if (currencyRates.size() == 0) {
+            parceFile();
+        }
+        return currencyRates;
     }
 }

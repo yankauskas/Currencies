@@ -1,6 +1,7 @@
 package org.yankauskas.currencies;
 
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -29,7 +30,17 @@ public class MainActivity extends AppCompatActivity implements TransactionProvid
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ((AppCurrencies) getApplication()).getComponent().inject(this);
-        setupUI();
+        transactionProvider.initProvider(new TransactionProvider.InitProviderCallback() {
+            @Override
+            public void onProviderInitFinished() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        setupUI();
+                    }
+                });
+            }
+        });
     }
 
     private void setupUI() {
