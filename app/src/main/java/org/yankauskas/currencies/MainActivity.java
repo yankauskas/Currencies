@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity implements TransactionProvid
     public static final String SKU_FRAGMENT_TAG = "SKU_FRAGMENT_TAG";
     public static final String SKU_DETAILS_FRAGMENT_TAG = "SKU_DETAILS_FRAGMENT_TAG";
     private static final String LOG_TAG = AppCompatActivity.class.getSimpleName();
-    
+
     @Inject
     TransactionProvider transactionProvider;
 
@@ -28,13 +28,8 @@ public class MainActivity extends AppCompatActivity implements TransactionProvid
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (savedInstanceState == null) {
-            InjectAsyncTask injectAsyncTask = new InjectAsyncTask();
-            injectAsyncTask.execute();
-        } else {
-            ((AppCurrencies) getApplication()).getComponent().inject(this);
-            setupUI();
-        }
+        ((AppCurrencies) getApplication()).getComponent().inject(this);
+        setupUI();
     }
 
     private void setupUI() {
@@ -69,19 +64,5 @@ public class MainActivity extends AppCompatActivity implements TransactionProvid
     @Override
     public TransactionProvider getTransactionProvider() {
         return transactionProvider;
-    }
-
-    private class InjectAsyncTask extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            ((AppCurrencies) getApplication()).getComponent().inject(MainActivity.this);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            setupUI();
-        }
     }
 }
